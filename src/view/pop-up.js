@@ -1,6 +1,7 @@
+import {createElement} from "../utils/utils.js";
 import {getCommentTemplate} from "./comment.js";
 
-export const getPopUpTemplate = (film) => {
+const getPopUpTemplate = (film) => {
   const {title, posterName, rating, director, writers, actors, filmReleasefullDate, filmDuration, country, genres, censorAge, description, comments} = film;
 
   const stringifyedWriters = writers.join();
@@ -10,8 +11,7 @@ export const getPopUpTemplate = (film) => {
     return getCommentTemplate(comment);
   }).join(`\n`);
 
-  return (`
-    <section class="film-details">
+  return (`<section class="film-details">
       <form class="film-details__inner" action="" method="get">
         <div class="form-details__top-container">
           <div class="film-details__close">
@@ -124,7 +124,28 @@ export const getPopUpTemplate = (film) => {
         </div>
         
       </form>
-    </section>
-  `);
+    </section>`);
 };
 
+export default class PopUp {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return getPopUpTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

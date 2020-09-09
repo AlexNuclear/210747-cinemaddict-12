@@ -1,9 +1,11 @@
-export const getFilmCardTemplate = (film) => {
+import {createElement} from "../utils/utils.js";
+
+const getFilmCardTemplate = (film) => {
   const MAX_DESCRIPTION_LENGTH = 139;
   const {title, rating, filmReleaseYear, filmDuration, genres, posterName, description, comments} = film;
   const stringifyedGenres = genres.join();
-  return (`
-    <article class="film-card">
+  return (
+    `<article class="film-card">
       <h3 class="film-card__title">${title}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
@@ -19,7 +21,29 @@ export const getFilmCardTemplate = (film) => {
         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
         <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
       </form>
-    </article>
-  `);
+    </article>`
+  );
 };
+
+export default class FilmCard {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+  _getTemplate() {
+    return getFilmCardTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 
