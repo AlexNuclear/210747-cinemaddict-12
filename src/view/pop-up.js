@@ -1,5 +1,5 @@
 import {createElement} from "../utils/utils.js";
-import {getCommentTemplate} from "./comment.js";
+import CommentView from "./comment.js";
 
 const getPopUpTemplate = (film) => {
   const {title, posterName, rating, director, writers, actors, filmReleasefullDate, filmDuration, country, genres, censorAge, description, comments} = film;
@@ -8,7 +8,7 @@ const getPopUpTemplate = (film) => {
   const stringifyedActors = actors.join();
 
   const commentsList = comments.map((comment) => {
-    return getCommentTemplate(comment);
+    return new CommentView(comment).getElement();
   }).join(`\n`);
 
   return (`<section class="film-details">
